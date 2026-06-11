@@ -30,7 +30,7 @@ export function Topbar({ onOpenSearch }: TopbarProps) {
     : (user?.username?.slice(0, 2).toUpperCase() ?? "AD");
 
   return (
-    <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-hairline bg-canvas px-lg">
+    <header className="no-print sticky top-0 z-40 flex h-16 items-center justify-between border-b border-hairline bg-canvas px-lg">
       <button
         onClick={onOpenSearch}
         className="flex items-center gap-2 rounded-sm border border-hairline bg-canvas-soft px-3 py-1.5 text-body-sm text-mute hover:border-hairline-strong transition-colors max-w-xs w-64"

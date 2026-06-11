@@ -2,7 +2,15 @@ import { useState } from "react";
 import type { CheckWithRelations } from "@/types/database";
 import { matchesSearch } from "@/utils/filter-utils";
 
-export function useChecksFilters(checks: CheckWithRelations[] | undefined) {
+interface UseChecksFiltersOptions {
+  donorId?: string | null;
+}
+
+export function useChecksFilters(
+  checks: CheckWithRelations[] | undefined,
+  options: UseChecksFiltersOptions = {},
+) {
+  const donorIdFilter = options.donorId ?? null;
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [bloodFilter, setBloodFilter] = useState("all");
@@ -17,12 +25,17 @@ export function useChecksFilters(checks: CheckWithRelations[] | undefined) {
       statusFilter === "all" || check.status === statusFilter;
     const matchesBlood =
       bloodFilter === "all" || String(check.blood_type_id) === bloodFilter;
+    const matchesDonor =
+      !donorIdFilter || check.donor_id === donorIdFilter;
 
-    return matchesSearchQuery && matchesStatus && matchesBlood;
+    return (
+      matchesSearchQuery && matchesStatus && matchesBlood && matchesDonor
+    );
   });
 
-  const hasActiveFilters =
+  const hasLocalFilters =
     statusFilter !== "all" || bloodFilter !== "all" || search !== "";
+  const hasActiveFilters = hasLocalFilters || !!donorIdFilter;
 
   const resetFilters = () => {
     setSearch("");
@@ -37,8 +50,10 @@ export function useChecksFilters(checks: CheckWithRelations[] | undefined) {
     setStatusFilter,
     bloodFilter,
     setBloodFilter,
+    donorIdFilter,
     filteredChecks,
     hasActiveFilters,
+    hasLocalFilters,
     resetFilters,
   };
 }

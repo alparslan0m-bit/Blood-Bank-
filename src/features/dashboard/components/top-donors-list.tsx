@@ -2,7 +2,7 @@ import { useTopDonors } from "@/features/dashboard/hooks/use-dashboard";
 import { DashboardPanel } from "@/features/dashboard/components/dashboard-panel";
 import { BloodTypeBadge } from "@/components/blood-type-badge";
 import { EmptyState } from "@/components/empty-state";
-import { Trophy } from "lucide-react";
+import { EntityEmptyIcon } from "@/constants/empty-state-icons";
 
 export function TopDonorsList() {
   const { data: topDonors, isLoading } = useTopDonors();
@@ -65,7 +65,7 @@ export function TopDonorsList() {
       ) : !isLoading ? (
         <EmptyState
           className="py-lg"
-          icon={<Trophy className="h-6 w-6 text-mute" />}
+          icon={<EntityEmptyIcon entity="donors" />}
           title="No donor rankings yet"
           description="Top donors appear after donation checks are completed."
         />

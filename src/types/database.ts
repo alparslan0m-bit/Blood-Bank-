@@ -79,9 +79,21 @@ export interface DonationCheck {
   distributed_at: string | null;
   blood_recorded_by: string | null;
   blood_recorded_at: string | null;
+  metadata?: Record<string, unknown> | null;
   check_images: CheckImage[];
   created_at: string;
   updated_at: string;
+}
+
+export interface Activity {
+  id: string;
+  user_id: string;
+  action: string;
+  entity: string;
+  entity_id: string;
+  details: string | null;
+  created_at: string;
+  user?: Pick<User, "full_name" | "username"> | null;
 }
 
 // ---- Join types ----

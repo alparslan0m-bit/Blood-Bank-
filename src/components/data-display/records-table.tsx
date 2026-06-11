@@ -16,6 +16,7 @@ interface RecordsTableProps<T> {
   getRowKey: (row: T) => string;
   emptyTitle: string;
   emptyDescription?: string;
+  emptyIcon?: React.ReactNode;
 }
 
 export function RecordsTable<T>({
@@ -25,6 +26,7 @@ export function RecordsTable<T>({
   getRowKey,
   emptyTitle,
   emptyDescription,
+  emptyIcon,
 }: RecordsTableProps<T>) {
   if (loading) {
     return (
@@ -38,6 +40,7 @@ export function RecordsTable<T>({
     return (
       <EmptyState
         className="py-xl"
+        icon={emptyIcon}
         title={emptyTitle}
         description={emptyDescription}
       />

@@ -17,7 +17,7 @@ export function CheckPatientCard({ patient, patientId }: CheckPatientCardProps) 
           Recipient Patient Profile
         </h3>
         {patientId && (
-          <Link to={`/patients/${patientId}`}>
+          <Link to={`/patients/${patientId}`} className="no-print">
             <Button variant="ghost" size="sm" className="text-caption">
               View File
             </Button>

@@ -1,11 +1,14 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useDonor, useDonorChecks } from "@/features/donors/hooks/use-donors";
 import {
   getDonorChecksColumns,
   type DonorCheckRow,
 } from "@/features/donors/components/donor-checks-columns";
+import { DonorStatsRow } from "@/features/donors/components/donor-stats-row";
+import { DonorDonationChart } from "@/features/donors/components/donor-donation-chart";
+import { DonorNotesCard } from "@/features/donors/components/donor-notes-card";
 import { PageHeader } from "@/components/page-header";
-import { BloodTypeBadge } from "@/components/blood-type-badge";
+import { Button } from "@/components/ui/button";
 import { LoadingState } from "@/components/feedback/loading-state";
 import { NotFoundState } from "@/components/feedback/not-found-state";
 import {
@@ -14,8 +17,8 @@ import {
   DetailField,
   RecordsTable,
 } from "@/components/data-display";
-import { formatDate } from "@/lib/utils";
-import { Phone, MapPin, ClipboardCheck, User, FileText } from "lucide-react";
+import { EntityEmptyIcon } from "@/constants/empty-state-icons";
+import { Phone, MapPin, ClipboardCheck, User, FileText, Plus } from "lucide-react";
 
 export function DonorDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -42,20 +45,22 @@ export function DonorDetailPage() {
     <div className="space-y-lg">
       <DetailBreadcrumb
         backTo="/donors"
-        trail={`Donors / ${donor.full_name}`}
+        currentLabel={donor.full_name}
       />
 
       <PageHeader
         title={donor.full_name}
         description={`National ID: ${donor.national_id}`}
       >
-        {donor.blood_types && (
-          <BloodTypeBadge
-            code={donor.blood_types.code}
-            isRare={donor.blood_types.is_rare}
-          />
-        )}
+        <Button size="sm" asChild>
+          <Link to={`/checks?donor_id=${donor.id}`}>
+            <Plus className="mr-2 h-4 w-4" />
+            New Check for Donor
+          </Link>
+        </Button>
       </PageHeader>
+
+      <DonorStatsRow donor={donor} />
 
       <div className="grid grid-cols-1 gap-lg lg:grid-cols-3">
         <div className="lg:col-span-1">
@@ -76,28 +81,15 @@ export function DonorDetailPage() {
                   {donor.address}
                 </span>
               </DetailField>
-              <DetailField label="Total registered donations">
-                <span className="tabular-nums">{donor.total_donations}</span>
-              </DetailField>
-              <DetailField label="Last donation date">
-                {donor.last_donation_date
-                  ? formatDate(donor.last_donation_date)
-                  : "No recorded donations"}
-              </DetailField>
               {donor.notes && (
-                <div className="border-t border-hairline pt-sm">
-                  <DetailField label="Staff notes">
-                    <p className="rounded-sm bg-canvas-soft p-sm font-normal text-body">
-                      {donor.notes}
-                    </p>
-                  </DetailField>
-                </div>
+                <DonorNotesCard notes={donor.notes} updatedAt={donor.updated_at} />
               )}
             </div>
           </DetailSection>
         </div>
 
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2 space-y-lg">
+          <DonorDonationChart checks={checks} loading={loadingChecks} />
           <DetailSection title="Donation records" icon={ClipboardCheck}>
             <RecordsTable<DonorCheckRow>
               columns={getDonorChecksColumns()}
@@ -106,6 +98,7 @@ export function DonorDetailPage() {
               getRowKey={(row) => row.id}
               emptyTitle="No donation checks"
               emptyDescription="Checks linked to this donor will appear here."
+              emptyIcon={<EntityEmptyIcon entity="checks" />}
             />
           </DetailSection>
         </div>

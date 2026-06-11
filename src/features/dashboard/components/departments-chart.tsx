@@ -6,7 +6,7 @@ import {
 } from "@/features/dashboard/constants/chart-styles";
 import { CHART_COLORS } from "@/constants/chart-colors";
 import { EmptyState } from "@/components/empty-state";
-import { Building2 } from "lucide-react";
+import { EntityEmptyIcon } from "@/constants/empty-state-icons";
 import {
   ResponsiveContainer,
   BarChart,
@@ -50,7 +50,7 @@ export function DepartmentsChart() {
         ) : (
           <EmptyState
             className="py-lg"
-            icon={<Building2 className="h-6 w-6 text-mute" />}
+            icon={<EntityEmptyIcon entity="department" />}
             title="No department data"
             description="Patient registrations will appear by department."
           />

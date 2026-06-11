@@ -3,7 +3,7 @@ import { DashboardPanel } from "@/features/dashboard/components/dashboard-panel"
 import { CHART_TOOLTIP_STYLE } from "@/features/dashboard/constants/chart-styles";
 import { CHART_COLORS } from "@/constants/chart-colors";
 import { EmptyState } from "@/components/empty-state";
-import { Droplets } from "lucide-react";
+import { EntityEmptyIcon } from "@/constants/empty-state-icons";
 import {
   ResponsiveContainer,
   PieChart,
@@ -62,7 +62,7 @@ export function BloodReserveChart() {
         ) : (
           <EmptyState
             className="py-lg"
-            icon={<Droplets className="h-6 w-6 text-mute" />}
+            icon={<EntityEmptyIcon entity="blood" />}
             title="No blood type data"
             description="Donor blood groups will populate this chart."
           />

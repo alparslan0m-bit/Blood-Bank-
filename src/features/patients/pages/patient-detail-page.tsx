@@ -13,6 +13,7 @@ import {
   DetailField,
   RecordsTable,
 } from "@/components/data-display";
+import { EntityEmptyIcon } from "@/constants/empty-state-icons";
 import { formatDate } from "@/lib/utils";
 import {
   Phone,
@@ -48,7 +49,7 @@ export function PatientDetailPage() {
     <div className="space-y-lg">
       <DetailBreadcrumb
         backTo="/patients"
-        trail={`Patients / ${patient.full_name}`}
+        currentLabel={patient.full_name}
       />
 
       <PageHeader
@@ -123,6 +124,7 @@ export function PatientDetailPage() {
               getRowKey={(row) => row.id}
               emptyTitle="No assigned checks"
               emptyDescription="Checks linked to this patient will appear here."
+              emptyIcon={<EntityEmptyIcon entity="checks" />}
             />
           </DetailSection>
         </div>

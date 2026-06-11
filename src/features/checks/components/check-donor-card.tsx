@@ -16,7 +16,7 @@ export function CheckDonorCard({ donor, donorId }: CheckDonorCardProps) {
           <Heart className="h-5 w-5 text-mute" />
           Donor Profile
         </h3>
-        <Link to={`/donors/${donorId}`}>
+        <Link to={`/donors/${donorId}`} className="no-print">
           <Button variant="ghost" size="sm" className="text-caption">
             View File
           </Button>

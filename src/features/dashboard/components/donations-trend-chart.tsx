@@ -5,6 +5,7 @@ import {
   CHART_TOOLTIP_STYLE,
 } from "@/features/dashboard/constants/chart-styles";
 import { EmptyState } from "@/components/empty-state";
+import { EntityEmptyIcon } from "@/constants/empty-state-icons";
 import { TrendingUp } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -75,7 +76,7 @@ export function DonationsTrendChart() {
         ) : (
           <EmptyState
             className="py-xl"
-            icon={<TrendingUp className="h-6 w-6 text-mute" />}
+            icon={<EntityEmptyIcon entity="checks" />}
             title="No trend data yet"
             description="Donation checks will appear here as they are recorded."
           />

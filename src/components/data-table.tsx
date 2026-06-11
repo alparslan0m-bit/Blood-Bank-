@@ -4,6 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/empty-state";
 import {
+  ChecksTableSkeletonBody,
+  DonorsTableSkeletonBody,
+} from "@/components/data-table-skeletons";
+import {
   Search,
   ChevronLeft,
   ChevronRight,
@@ -29,9 +33,13 @@ interface DataTableProps<T> {
   onSearchChange?: (value: string) => void;
   onRowClick?: (row: T) => void;
   getRowKey?: (row: T, index: number) => string;
+  getRowClassName?: (row: T) => string | undefined;
   pageSize?: number;
   emptyTitle?: string;
   emptyDescription?: string;
+  emptyIcon?: React.ReactNode;
+  emptyAction?: React.ReactNode;
+  loadingSkeleton?: "checks" | "donors" | "default";
 }
 
 export function DataTable<T>({
@@ -43,9 +51,13 @@ export function DataTable<T>({
   onSearchChange,
   onRowClick,
   getRowKey,
+  getRowClassName,
   pageSize = 15,
   emptyTitle = "No results found",
   emptyDescription = "Try adjusting your search or filters.",
+  emptyIcon,
+  emptyAction,
+  loadingSkeleton = "default",
 }: DataTableProps<T>) {
   const [page, setPage] = useState(0);
   const [sortKey, setSortKey] = useState<string | null>(null);
@@ -100,11 +112,37 @@ export function DataTable<T>({
             <Skeleton className="h-10 w-64" />
           </div>
         )}
-        <div className="space-y-3 p-md">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Skeleton key={i} className="h-10 w-full" />
-          ))}
-        </div>
+        {loadingSkeleton === "default" ? (
+          <div className="space-y-3 p-md">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Skeleton key={i} className="h-10 w-full" />
+            ))}
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-hairline">
+                  {columns.map((col) => (
+                    <th
+                      key={col.key}
+                      className="bg-canvas-soft px-md py-xs text-left"
+                    >
+                      <Skeleton className="h-3 w-16" />
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {loadingSkeleton === "checks" ? (
+                  <ChecksTableSkeletonBody />
+                ) : (
+                  <DonorsTableSkeletonBody />
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     );
   }
@@ -133,7 +171,12 @@ export function DataTable<T>({
       )}
 
       {paged.length === 0 ? (
-        <EmptyState title={emptyTitle} description={emptyDescription} />
+        <EmptyState
+          icon={emptyIcon}
+          title={emptyTitle}
+          description={emptyDescription}
+          action={emptyAction}
+        />
       ) : (
         <>
           <div className="overflow-x-auto">
@@ -192,6 +235,7 @@ export function DataTable<T>({
                       "border-b border-hairline transition-colors last:border-0",
                       onRowClick &&
                         "cursor-pointer hover:bg-canvas-soft focus-within:bg-canvas-soft",
+                      getRowClassName?.(row),
                     )}
                     onClick={() => onRowClick?.(row)}
                   >
