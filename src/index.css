@@ -1,0 +1,112 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-ink: #171717;
+  --color-body: #4d4d4d;
+  --color-mute: #888888;
+  --color-hairline: #ebebeb;
+  --color-hairline-strong: #a1a1a1;
+  --color-canvas: #ffffff;
+  --color-canvas-soft: #fafafa;
+  --color-canvas-soft-2: #f5f5f5;
+  --color-link: #0070f3;
+  --color-link-deep: #0761d1;
+  --color-link-bg-soft: #d3e5ff;
+  --color-success: #0070f3;
+  --color-error: #ee0000;
+  --color-error-soft: #f7d4d6;
+  --color-error-deep: #c50000;
+  --color-warning: #f5a623;
+  --color-warning-soft: #ffefcf;
+  --color-warning-deep: #ab570a;
+  --color-violet: #7928ca;
+  --color-violet-soft: #d8ccf1;
+  --color-cyan: #50e3c2;
+  --color-cyan-soft: #aaffec;
+  --color-highlight-pink: #ff0080;
+  --color-primary: #171717;
+  --color-on-primary: #ffffff;
+  --color-selection-bg: #171717;
+  --color-selection-fg: #f2f2f2;
+  /* Committed palette: coral + teal/indigo/amber */
+  --color-coral: #ff5630;
+  --color-coral-soft: #ffe8e0;
+  --color-coral-deep: #d93a1c;
+  --color-teal: #16a89f;
+  --color-teal-soft: #d3f3f1;
+  --color-teal-deep: #0d6b63;
+  --color-indigo: #5b5fb4;
+  --color-indigo-soft: #e8e7f7;
+  --color-indigo-deep: #3d3a7d;
+  --color-amber: #d97706;
+  --color-amber-soft: #fef3e2;
+  --color-amber-deep: #92450f;
+}
+
+.dark {
+  --color-ink: #ededed;
+  --color-body: #a1a1a1;
+  --color-mute: #6e6e6e;
+  --color-hairline: #2e2e2e;
+  --color-hairline-strong: #454545;
+  --color-canvas: #0a0a0a;
+  --color-canvas-soft: #111111;
+  --color-canvas-soft-2: #1a1a1a;
+  --color-link: #3b9eff;
+  --color-link-deep: #5eadff;
+  --color-link-bg-soft: #0d2847;
+  --color-success: #3b9eff;
+  --color-error: #ff4d4d;
+  --color-error-soft: #3d1114;
+  --color-error-deep: #ff6b6b;
+  --color-warning: #f5a623;
+  --color-warning-soft: #3d2e0a;
+  --color-warning-deep: #ffc453;
+  --color-violet: #a855f7;
+  --color-violet-soft: #2d1b4e;
+  --color-cyan: #50e3c2;
+  --color-cyan-soft: #0d3d32;
+  --color-highlight-pink: #ff0080;
+  --color-primary: #ededed;
+  --color-on-primary: #0a0a0a;
+  --color-selection-bg: #ededed;
+  --color-selection-fg: #0a0a0a;
+  /* Committed palette: coral + teal/indigo/amber (dark mode) */
+  --color-coral: #ff7651;
+  --color-coral-soft: #3d1f15;
+  --color-coral-deep: #ffb8a3;
+  --color-teal: #4db5ac;
+  --color-teal-soft: #0d3d32;
+  --color-teal-deep: #80d9d0;
+  --color-indigo: #8b88d9;
+  --color-indigo-soft: #2a1f52;
+  --color-indigo-deep: #c5c2ff;
+  --color-amber: #f59e0b;
+  --color-amber-soft: #2d2306;
+  --color-amber-deep: #fcd34d;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-hairline);
+  }
+  body {
+    font-family:
+      "Inter",
+      system-ui,
+      -apple-system,
+      sans-serif;
+    color: var(--color-ink);
+    background-color: var(--color-canvas-soft);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection {
+    background-color: var(--color-selection-bg);
+    color: var(--color-selection-fg);
+  }
+}
