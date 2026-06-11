@@ -1,4 +1,4 @@
--- Row Level Securityy for authentication tables: users and user_roles
+-- Row Level Security for authentication tables: users and user_roles
 
 alter table users enable row level security;
 create policy select_users on users for select using (
