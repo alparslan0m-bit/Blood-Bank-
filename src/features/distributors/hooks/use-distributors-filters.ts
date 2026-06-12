@@ -3,10 +3,13 @@ import { matchesDateRange, matchesSearch } from "@/utils/filter-utils";
 
 type DistributorPerformanceRecord = {
   distributor_id: string;
-  action: string;
   created_at: string;
   quantity?: number | null;
-  distributor?: { full_name?: string; username?: string; phone?: string | null };
+  distributor?: {
+    full_name?: string;
+    username?: string;
+    phone?: string | null;
+  };
   patient?: { full_name?: string; department?: string };
   donation_check?: { serial?: string };
 };
@@ -16,15 +19,8 @@ export function useDistributorsFilters(
 ) {
   const [search, setSearch] = useState("");
   const [distributorFilter, setDistributorFilter] = useState("all");
-  const [actionFilter, setActionFilter] = useState("all");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-
-  const uniqueActions = useMemo(
-    () =>
-      Array.from(new Set((performance ?? []).map((p) => p.action))).sort(),
-    [performance],
-  );
 
   const filteredPerformance = (performance ?? []).filter((record) => {
     const matchesSearchQuery =
@@ -37,24 +33,13 @@ export function useDistributorsFilters(
       distributorFilter === "all" ||
       String(record.distributor_id) === distributorFilter;
 
-    const matchesAction =
-      actionFilter === "all" ||
-      record.action.toLowerCase() === actionFilter.toLowerCase();
+    const matchesDate = matchesDateRange(record.created_at, startDate, endDate);
 
-    const matchesDate = matchesDateRange(
-      record.created_at,
-      startDate,
-      endDate,
-    );
-
-    return (
-      matchesSearchQuery && matchesDistributor && matchesAction && matchesDate
-    );
+    return matchesSearchQuery && matchesDistributor && matchesDate;
   });
 
   const hasActiveFilters =
     distributorFilter !== "all" ||
-    actionFilter !== "all" ||
     search !== "" ||
     startDate !== "" ||
     endDate !== "";
@@ -62,7 +47,6 @@ export function useDistributorsFilters(
   const resetFilters = () => {
     setSearch("");
     setDistributorFilter("all");
-    setActionFilter("all");
     setStartDate("");
     setEndDate("");
   };
@@ -72,13 +56,10 @@ export function useDistributorsFilters(
     setSearch,
     distributorFilter,
     setDistributorFilter,
-    actionFilter,
-    setActionFilter,
     startDate,
     setStartDate,
     endDate,
     setEndDate,
-    uniqueActions,
     filteredPerformance,
     hasActiveFilters,
     resetFilters,

@@ -5,7 +5,6 @@ import {
   CHART_TOOLTIP_STYLE,
 } from "@/features/dashboard/constants/chart-styles";
 import { CHART_COLORS } from "@/constants/chart-colors";
-import { EmptyState } from "@/components/empty-state";
 import { EntityEmptyIcon } from "@/constants/empty-state-icons";
 import {
   ResponsiveContainer,
@@ -48,12 +47,17 @@ export function DepartmentsChart() {
             </BarChart>
           </ResponsiveContainer>
         ) : (
-          <EmptyState
-            className="py-lg"
-            icon={<EntityEmptyIcon entity="department" />}
-            title="No department data"
-            description="Patient registrations will appear by department."
-          />
+          <div className="flex flex-col items-center justify-center py-lg text-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-canvas-soft-2 mb-4">
+              <EntityEmptyIcon entity="department" />
+            </div>
+            <h3 className="text-body-sm font-medium text-ink mb-1">
+              No department data
+            </h3>
+            <p className="text-caption text-mute max-w-sm">
+              Patient registrations will appear by department.
+            </p>
+          </div>
         )}
       </div>
     </DashboardPanel>

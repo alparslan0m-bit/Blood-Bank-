@@ -3,7 +3,6 @@ import { EntityEmptyIcon } from "@/constants/empty-state-icons";
 import { DashboardPanel } from "@/features/dashboard/components/dashboard-panel";
 import { CHART_TOOLTIP_STYLE } from "@/features/dashboard/constants/chart-styles";
 import { groupChecksByMonth } from "@/features/donors/utils/donor-stats";
-import { EmptyState } from "@/components/empty-state";
 import {
   ResponsiveContainer,
   BarChart,
@@ -16,11 +15,11 @@ interface DonorDonationChartProps {
   loading?: boolean;
 }
 
-export function DonorDonationChart({ checks, loading }: DonorDonationChartProps) {
-  const chartData = useMemo(
-    () => groupChecksByMonth(checks ?? []),
-    [checks],
-  );
+export function DonorDonationChart({
+  checks,
+  loading,
+}: DonorDonationChartProps) {
+  const chartData = useMemo(() => groupChecksByMonth(checks ?? []), [checks]);
   const hasData = chartData.length > 0;
 
   return (
@@ -49,12 +48,17 @@ export function DonorDonationChart({ checks, loading }: DonorDonationChartProps)
             </BarChart>
           </ResponsiveContainer>
         ) : (
-          <EmptyState
-            className="py-md"
-            icon={<EntityEmptyIcon entity="checks" className="h-5 w-5" />}
-            title="No donation history"
-            description="Monthly activity will appear once checks are linked."
-          />
+          <div className="flex flex-col items-center justify-center py-md text-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-canvas-soft-2 mb-4">
+              <EntityEmptyIcon entity="checks" className="h-5 w-5" />
+            </div>
+            <h3 className="text-body-sm font-medium text-ink mb-1">
+              No donation history
+            </h3>
+            <p className="text-caption text-mute max-w-sm">
+              Monthly activity will appear once checks are linked.
+            </p>
+          </div>
         )}
       </div>
     </DashboardPanel>

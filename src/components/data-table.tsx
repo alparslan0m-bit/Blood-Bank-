@@ -2,12 +2,12 @@ import { useState, useMemo, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { EmptyState } from "@/components/empty-state";
 import {
   ChecksTableSkeletonBody,
   DonorsTableSkeletonBody,
 } from "@/components/data-table-skeletons";
 import {
+  Inbox,
   Search,
   ChevronLeft,
   ChevronRight,
@@ -171,12 +171,20 @@ export function DataTable<T>({
       )}
 
       {paged.length === 0 ? (
-        <EmptyState
-          icon={emptyIcon}
-          title={emptyTitle}
-          description={emptyDescription}
-          action={emptyAction}
-        />
+        <div className="flex flex-col items-center justify-center py-5xl text-center">
+          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-canvas-soft-2 mb-4">
+            {emptyIcon ?? <Inbox className="h-6 w-6 text-mute" />}
+          </div>
+          <h3 className="text-body-sm font-medium text-ink mb-1">
+            {emptyTitle}
+          </h3>
+          {emptyDescription && (
+            <p className="text-caption text-mute max-w-sm">
+              {emptyDescription}
+            </p>
+          )}
+          {emptyAction && <div className="mt-4">{emptyAction}</div>}
+        </div>
       ) : (
         <>
           <div className="overflow-x-auto">
@@ -204,7 +212,10 @@ export function DataTable<T>({
                       )}
                       onClick={() => col.sortable && handleSort(col.key)}
                       onKeyDown={(e) => {
-                        if (col.sortable && (e.key === "Enter" || e.key === " ")) {
+                        if (
+                          col.sortable &&
+                          (e.key === "Enter" || e.key === " ")
+                        ) {
                           e.preventDefault();
                           handleSort(col.key);
                         }
@@ -230,7 +241,10 @@ export function DataTable<T>({
               <tbody>
                 {paged.map((row, i) => (
                   <tr
-                    key={getRowKey?.(row, page * pageSize + i) ?? page * pageSize + i}
+                    key={
+                      getRowKey?.(row, page * pageSize + i) ??
+                      page * pageSize + i
+                    }
                     className={cn(
                       "border-b border-hairline transition-colors last:border-0",
                       onRowClick &&

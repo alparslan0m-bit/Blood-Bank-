@@ -6,7 +6,6 @@ import { formatRelative } from "@/lib/utils";
 
 type ReceiverPerformanceRow = {
   id?: string;
-  action: string;
   created_at: string;
   receiver?: { full_name?: string; username?: string };
   donor?: { full_name?: string };
@@ -33,7 +32,13 @@ export function ReceiversKanbanBoard({
   emptyIcon,
 }: ReceiversKanbanBoardProps) {
   const columns = useMemo(
-    () => buildKanbanColumns(performance.map((row) => row.action)),
+    () =>
+      buildKanbanColumns(
+        performance.map(
+          (row) =>
+            row.receiver?.full_name ?? row.receiver?.username ?? "Unknown",
+        ),
+      ),
     [performance],
   );
 
@@ -41,7 +46,9 @@ export function ReceiversKanbanBoard({
     <KanbanBoard
       columns={columns}
       items={performance}
-      groupBy={(row) => row.action}
+      groupBy={(row) =>
+        row.receiver?.full_name ?? row.receiver?.username ?? "Unknown"
+      }
       getItemKey={(row) => String(row.id ?? row.created_at)}
       loading={loading}
       search={search}
@@ -54,20 +61,12 @@ export function ReceiversKanbanBoard({
       renderCard={(row) => (
         <KanbanCard>
           <p className="truncate font-medium text-body-sm text-ink">
-            {row.receiver?.full_name ?? row.receiver?.username ?? "Unknown"}
+            {row.donor?.full_name ?? "Unknown"}
           </p>
           <p className="mt-xxs truncate text-caption text-body">
-            {row.donor?.full_name ?? "—"}
+            {row.donation_check?.serial ?? "—"}
           </p>
-          <div className="mt-sm flex items-center justify-between gap-xs">
-            <span className="truncate font-mono text-[10px] text-mute">
-              {row.donation_check?.serial ?? "—"}
-            </span>
-            <Badge variant="secondary" className="shrink-0 font-mono text-[9px] uppercase">
-              {row.action}
-            </Badge>
-          </div>
-          <p className="mt-xxs text-[10px] font-mono text-mute">
+          <p className="mt-sm text-[10px] font-mono text-mute">
             {formatRelative(row.created_at)}
           </p>
         </KanbanCard>

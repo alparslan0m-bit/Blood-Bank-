@@ -11,7 +11,11 @@ import { EntityEmptyIcon } from "@/constants/empty-state-icons";
 import { DataTable } from "@/components/data-table";
 import { PageHeader } from "@/components/page-header";
 import { ListViewToggle } from "@/components/list-view-toggle";
-import { FilterBar, FilterSelect, FilterDateRange } from "@/components/data-display";
+import {
+  FilterBar,
+  FilterSelect,
+  FilterDateRange,
+} from "@/components/data-display";
 
 export function DistributorsPerformancePage() {
   const { view, setView } = useListViewPreference(
@@ -25,13 +29,10 @@ export function DistributorsPerformancePage() {
     setSearch,
     distributorFilter,
     setDistributorFilter,
-    actionFilter,
-    setActionFilter,
     startDate,
     setStartDate,
     endDate,
     setEndDate,
-    uniqueActions,
     filteredPerformance,
     hasActiveFilters,
     resetFilters,
@@ -72,16 +73,6 @@ export function DistributorsPerformancePage() {
             })) ?? []),
           ]}
         />
-        <FilterSelect
-          label="Filter Action"
-          value={actionFilter}
-          onValueChange={setActionFilter}
-          placeholder="All Actions"
-          options={[
-            { value: "all", label: "All Actions" },
-            ...uniqueActions.map((action) => ({ value: action, label: action })),
-          ]}
-        />
         <FilterDateRange
           startDate={startDate}
           endDate={endDate}
@@ -95,7 +86,9 @@ export function DistributorsPerformancePage() {
           columns={columns}
           data={filteredPerformance}
           loading={isLoading}
-          getRowKey={(row) => String((row as { id?: string }).id ?? row.created_at)}
+          getRowKey={(row) =>
+            String((row as { id?: string }).id ?? row.created_at)
+          }
           searchPlaceholder="Search by distributor, patient, or check number..."
           searchValue={search}
           onSearchChange={setSearch}

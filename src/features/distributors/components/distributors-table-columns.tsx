@@ -4,10 +4,13 @@ import type { Column } from "@/components/data-table";
 import { formatDate } from "@/lib/utils";
 
 type DistributorPerformanceRow = {
-  action: string;
   created_at: string;
   quantity?: number | null;
-  distributor?: { full_name?: string; username?: string; phone?: string | null };
+  distributor?: {
+    full_name?: string;
+    username?: string;
+    phone?: string | null;
+  };
   patient?: { full_name?: string; department?: string };
   blood_type?: { code: string; is_rare: boolean } | null;
   donation_check?: { serial?: string };
@@ -63,15 +66,6 @@ export function getDistributorsTableColumns(): Column<DistributorPerformanceRow>
       header: "Quantity",
       render: (row) => (
         <span>{row.quantity ? `${row.quantity} units` : "—"}</span>
-      ),
-    },
-    {
-      key: "action",
-      header: "Action",
-      render: (row) => (
-        <Badge variant="secondary" className="font-mono text-[10px] uppercase">
-          {row.action}
-        </Badge>
       ),
     },
     {

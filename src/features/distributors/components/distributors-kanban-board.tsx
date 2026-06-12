@@ -6,7 +6,6 @@ import { formatRelative } from "@/lib/utils";
 
 type DistributorPerformanceRow = {
   id?: string;
-  action: string;
   created_at: string;
   quantity?: number | null;
   distributor?: { full_name?: string; username?: string };
@@ -34,7 +33,15 @@ export function DistributorsKanbanBoard({
   emptyIcon,
 }: DistributorsKanbanBoardProps) {
   const columns = useMemo(
-    () => buildKanbanColumns(performance.map((row) => row.action)),
+    () =>
+      buildKanbanColumns(
+        performance.map(
+          (row) =>
+            row.distributor?.full_name ??
+            row.distributor?.username ??
+            "Unknown",
+        ),
+      ),
     [performance],
   );
 
@@ -42,7 +49,9 @@ export function DistributorsKanbanBoard({
     <KanbanBoard
       columns={columns}
       items={performance}
-      groupBy={(row) => row.action}
+      groupBy={(row) =>
+        row.distributor?.full_name ?? row.distributor?.username ?? "Unknown"
+      }
       getItemKey={(row) => String(row.id ?? row.created_at)}
       loading={loading}
       search={search}
@@ -72,16 +81,8 @@ export function DistributorsKanbanBoard({
               </span>
             ) : null}
           </div>
-          <div className="mt-xxs flex items-center justify-between gap-xs">
-            <Badge
-              variant="secondary"
-              className="font-mono text-[9px] uppercase"
-            >
-              {row.action}
-            </Badge>
-            <span className="text-[10px] font-mono text-mute">
-              {formatRelative(row.created_at)}
-            </span>
+          <div className="mt-xxs text-[10px] font-mono text-mute">
+            {formatRelative(row.created_at)}
           </div>
         </KanbanCard>
       )}

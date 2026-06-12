@@ -4,7 +4,6 @@ import type { Column } from "@/components/data-table";
 import { formatDate } from "@/lib/utils";
 
 type ReceiverPerformanceRow = {
-  action: string;
   created_at: string;
   receiver?: { full_name?: string; username?: string; phone?: string | null };
   donor?: { full_name?: string; national_id?: string };
@@ -54,15 +53,6 @@ export function getReceiversTableColumns(): Column<ReceiverPerformanceRow>[] {
         ) : (
           <span className="text-mute">—</span>
         ),
-    },
-    {
-      key: "action",
-      header: "Action",
-      render: (row) => (
-        <Badge variant="secondary" className="font-mono text-[10px] uppercase">
-          {row.action}
-        </Badge>
-      ),
     },
     {
       key: "donation_check",

@@ -1,9 +1,8 @@
 import { useMemo } from "react";
-import { Search } from "lucide-react";
+import { Inbox, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { EmptyState } from "@/components/empty-state";
 import { cn } from "@/lib/utils";
 
 export interface KanbanColumnDef {
@@ -130,12 +129,24 @@ export function KanbanBoard<T>({
       )}
 
       {items.length === 0 ? (
-        <EmptyState
-          icon={emptyIcon}
-          title={emptyTitle}
-          description={emptyDescription}
-          action={emptyAction}
-        />
+        <div
+          className={cn(
+            "flex flex-col items-center justify-center py-5xl text-center",
+          )}
+        >
+          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-canvas-soft-2 mb-4">
+            {emptyIcon ?? <Inbox className="h-6 w-6 text-mute" />}
+          </div>
+          <h3 className="text-body-sm font-medium text-ink mb-1">
+            {emptyTitle}
+          </h3>
+          {emptyDescription && (
+            <p className="text-caption text-mute max-w-sm">
+              {emptyDescription}
+            </p>
+          )}
+          {emptyAction && <div className="mt-4">{emptyAction}</div>}
+        </div>
       ) : (
         <div className="flex gap-md overflow-x-auto pb-sm -mx-px">
           {columns.map((column) => {

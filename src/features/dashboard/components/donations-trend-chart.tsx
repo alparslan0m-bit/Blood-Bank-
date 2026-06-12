@@ -4,7 +4,6 @@ import {
   CHART_AXIS_TICK,
   CHART_TOOLTIP_STYLE,
 } from "@/features/dashboard/constants/chart-styles";
-import { EmptyState } from "@/components/empty-state";
 import { EntityEmptyIcon } from "@/constants/empty-state-icons";
 import { TrendingUp } from "lucide-react";
 import {
@@ -56,11 +55,7 @@ export function DonationsTrendChart() {
                 </linearGradient>
               </defs>
               <XAxis dataKey="name" {...CHART_AXIS_TICK} />
-              <YAxis
-                {...CHART_AXIS_TICK}
-                allowDecimals={false}
-                width={32}
-              />
+              <YAxis {...CHART_AXIS_TICK} allowDecimals={false} width={32} />
               <RechartsTooltip contentStyle={CHART_TOOLTIP_STYLE} />
               <Area
                 type="monotone"
@@ -74,12 +69,17 @@ export function DonationsTrendChart() {
             </AreaChart>
           </ResponsiveContainer>
         ) : (
-          <EmptyState
-            className="py-xl"
-            icon={<EntityEmptyIcon entity="checks" />}
-            title="No trend data yet"
-            description="Donation checks will appear here as they are recorded."
-          />
+          <div className="flex flex-col items-center justify-center py-xl text-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-canvas-soft-2 mb-4">
+              <EntityEmptyIcon entity="checks" />
+            </div>
+            <h3 className="text-body-sm font-medium text-ink mb-1">
+              No trend data yet
+            </h3>
+            <p className="text-caption text-mute max-w-sm">
+              Donation checks will appear here as they are recorded.
+            </p>
+          </div>
         )}
       </div>
     </DashboardPanel>

@@ -1,6 +1,5 @@
-import { Loader2 } from "lucide-react";
+import { Loader2, Inbox } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { EmptyState } from "@/components/empty-state";
 
 export interface RecordsColumn<T> {
   key: string;
@@ -38,12 +37,15 @@ export function RecordsTable<T>({
 
   if (data.length === 0) {
     return (
-      <EmptyState
-        className="py-xl"
-        icon={emptyIcon}
-        title={emptyTitle}
-        description={emptyDescription}
-      />
+      <div className="flex flex-col items-center justify-center py-xl text-center">
+        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-canvas-soft-2 mb-4">
+          {emptyIcon ?? <Inbox className="h-6 w-6 text-mute" />}
+        </div>
+        <h3 className="text-body-sm font-medium text-ink mb-1">{emptyTitle}</h3>
+        {emptyDescription && (
+          <p className="text-caption text-mute max-w-sm">{emptyDescription}</p>
+        )}
+      </div>
     );
   }
 
