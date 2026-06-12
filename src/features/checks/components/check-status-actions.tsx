@@ -25,8 +25,7 @@ const STATUS_FLOW = [
   "created",
   "transferred",
   "blood_recorded",
-  "distributed",
-  "completed",
+  "patient_served",
 ] as const;
 
 interface CheckStatusActionsProps {
@@ -36,10 +35,11 @@ interface CheckStatusActionsProps {
   setSelectedBloodType: (value: string) => void;
   selectedDistributor: string;
   setSelectedDistributor: (value: string) => void;
+  servePatientNotes: string;
+  setServePatientNotes: (value: string) => void;
   onTransfer: () => void;
   onRecordBlood: () => void;
-  onDistribute: () => void;
-  onComplete: () => void;
+  onServePatient: () => void;
 }
 
 export function CheckStatusActions({
@@ -49,10 +49,11 @@ export function CheckStatusActions({
   setSelectedBloodType,
   selectedDistributor,
   setSelectedDistributor,
+  servePatientNotes,
+  setServePatientNotes,
   onTransfer,
   onRecordBlood,
-  onDistribute,
-  onComplete,
+  onServePatient,
 }: CheckStatusActionsProps) {
   const { data: distributors } = useDistributorsForChecks();
   const { data: bloodTypes } = useBloodTypes();
@@ -93,7 +94,7 @@ export function CheckStatusActions({
         </div>
         <div className="mt-xs flex justify-between text-[10px] font-mono text-mute">
           <span>Created</span>
-          <span>Complete</span>
+          <span>Served</span>
         </div>
       </div>
 
@@ -193,36 +194,47 @@ export function CheckStatusActions({
         )}
 
         {check.status === "blood_recorded" && (
-          <Button
-            size="sm"
-            onClick={onDistribute}
-            disabled={actionLoading}
-            className="w-full"
-          >
-            {actionLoading && (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            )}
-            Mark Distributed
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button size="sm" className="w-full">
+                Confirm Patient Served
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-md">
+              <DialogHeader>
+                <DialogTitle>Patient Delivery Confirmation</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-md py-4">
+                <div className="space-y-xs">
+                  <label className="text-caption font-semibold text-ink">
+                    Delivery Notes (required)
+                  </label>
+                  <textarea
+                    value={servePatientNotes}
+                    onChange={(e) => setServePatientNotes(e.target.value)}
+                    placeholder="Patient confirmed receipt. Ward, bed, nurse name..."
+                    rows={4}
+                    className="flex w-full rounded-sm border border-hairline bg-canvas px-sm py-xs text-body-sm text-ink placeholder:text-mute focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-link"
+                  />
+                </div>
+                <Button
+                  onClick={onServePatient}
+                  disabled={!servePatientNotes.trim() || actionLoading}
+                  className="w-full"
+                >
+                  {actionLoading && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  Sign Patient Served
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
         )}
 
-        {check.status === "distributed" && (
-          <Button
-            size="sm"
-            onClick={onComplete}
-            disabled={actionLoading}
-            className="w-full"
-          >
-            {actionLoading && (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            )}
-            Complete Check
-          </Button>
-        )}
-
-        {check.status === "completed" && (
+        {check.status === "patient_served" && (
           <p className="text-body-sm text-mute text-center py-sm">
-            This check has been completed. No further actions required.
+            Patient has been served. This check is closed.
           </p>
         )}
       </div>

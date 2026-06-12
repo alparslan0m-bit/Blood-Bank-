@@ -16,7 +16,8 @@ import { CheckMetadataCard } from "@/features/checks/components/check-metadata-c
 import { CheckImageGallery } from "@/features/checks/components/check-image-gallery";
 import { CheckLabBloodSection } from "@/features/checks/components/check-lab-blood-section";
 import { CheckRelatedChecks } from "@/features/checks/components/check-related-checks";
-import { CheckAuditTrail } from "@/features/checks/components/check-audit-trail";
+import { CheckEventLog } from "@/features/checks/components/check-event-log";
+import { CheckChainOfCustody } from "@/features/checks/components/check-chain-of-custody";
 import { CheckNotFound } from "@/features/checks/components/check-not-found";
 
 export function CheckDetailPage() {
@@ -29,10 +30,11 @@ export function CheckDetailPage() {
     setSelectedBloodType,
     selectedDistributor,
     setSelectedDistributor,
+    servePatientNotes,
+    setServePatientNotes,
     handleTransfer,
     handleRecordBlood,
-    handleDistribute,
-    handleComplete,
+    handleServePatient,
   } = useCheckStatusActions(id ?? "");
 
   if (isLoading) {
@@ -67,6 +69,7 @@ export function CheckDetailPage() {
       <div className="check-detail-layout grid grid-cols-1 lg:grid-cols-3 gap-lg items-start">
         <div className="lg:col-span-2 space-y-lg min-w-0">
           <CheckTimeline check={check} />
+          <CheckChainOfCustody check={check} />
 
           <Tabs defaultValue="donor-patient" className="check-detail-tabs">
             <TabsList className="no-print w-full justify-start">
@@ -119,10 +122,11 @@ export function CheckDetailPage() {
             setSelectedBloodType={setSelectedBloodType}
             selectedDistributor={selectedDistributor}
             setSelectedDistributor={setSelectedDistributor}
+            servePatientNotes={servePatientNotes}
+            setServePatientNotes={setServePatientNotes}
             onTransfer={handleTransfer}
             onRecordBlood={handleRecordBlood}
-            onDistribute={handleDistribute}
-            onComplete={handleComplete}
+            onServePatient={handleServePatient}
           />
           <CheckMetadataCard check={check} />
           <div className="no-print space-y-lg">
@@ -130,7 +134,7 @@ export function CheckDetailPage() {
               donorId={check.donor_id}
               currentCheckId={check.id}
             />
-            <CheckAuditTrail checkId={check.id} />
+            <CheckEventLog checkId={check.id} />
           </div>
         </aside>
       </div>

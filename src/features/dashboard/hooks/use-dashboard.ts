@@ -70,3 +70,38 @@ export function useDepartmentDistribution() {
     queryFn: dashboardApi.fetchDepartmentDistribution,
   });
 }
+
+export function usePendingTransfer() {
+  return useQuery({
+    queryKey: ["lifecycle", "pendingTransfer"],
+    queryFn: dashboardApi.fetchPendingTransfer,
+  });
+}
+
+export function usePendingPatientService() {
+  return useQuery({
+    queryKey: ["lifecycle", "pendingPatientService"],
+    queryFn: dashboardApi.fetchPendingPatientService,
+  });
+}
+
+export function useStaleChecks() {
+  return useQuery({
+    queryKey: ["lifecycle", "staleChecks"],
+    queryFn: dashboardApi.fetchStaleChecks,
+  });
+}
+
+export function useLifecycleCounts() {
+  return useQuery({
+    queryKey: ["lifecycle", "counts"],
+    queryFn: dashboardApi.fetchLifecycleCounts,
+  });
+}
+
+export function useServedToday() {
+  return useQuery({
+    queryKey: ["lifecycle", "servedToday"],
+    queryFn: dashboardApi.fetchServedToday,
+  });
+}

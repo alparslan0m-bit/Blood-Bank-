@@ -26,8 +26,8 @@ values
 
 insert into donation_checks (id, donor_id, patient_id, blood_type_id, created_by, distributor_id, status, transferred_to_distributor_at, distributed_at, blood_recorded_by, blood_recorded_at)
 values
-  ('30000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000001', '20000000-0000-0000-0000-000000000002', (select id from blood_types where code='A+'), '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000003', 'distributed', now() - interval '3 days', now() - interval '2 days', '00000000-0000-0000-0000-000000000003', now() - interval '2 days'),
-  ('30000000-0000-0000-0000-000000000002', '10000000-0000-0000-0000-000000000002', '20000000-0000-0000-0000-000000000001', (select id from blood_types where code='O-'), '00000000-0000-0000-0000-000000000002', '00000000-0000-0000-0000-000000000004', 'distributed', now() - interval '4 days', now() - interval '3 days', '00000000-0000-0000-0000-000000000004', now() - interval '3 days');
+  ('30000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000001', '20000000-0000-0000-0000-000000000002', (select id from blood_types where code='A+'), '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000003', 'blood_recorded', now() - interval '3 days', null, '00000000-0000-0000-0000-000000000003', now() - interval '2 days'),
+  ('30000000-0000-0000-0000-000000000002', '10000000-0000-0000-0000-000000000002', '20000000-0000-0000-0000-000000000001', (select id from blood_types where code='O-'), '00000000-0000-0000-0000-000000000002', '00000000-0000-0000-0000-000000000004', 'patient_served', now() - interval '4 days', null, '00000000-0000-0000-0000-000000000004', now() - interval '3 days');
 
 insert into receiver_performance (receiver_id, donor_id, donation_check_id, blood_type_id, action, notes)
 values

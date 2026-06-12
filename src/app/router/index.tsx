@@ -3,7 +3,7 @@ import { ProtectedRoute } from "@/components/protected-route";
 import { DashboardLayout } from "@/app/layouts/dashboard-layout";
 import { LoginPage } from "@/features/auth/login-page";
 import { UnauthorizedPage } from "@/features/auth/unauthorized-page";
-import { DashboardPage } from "@/features/dashboard";
+import { DashboardPage, ChecksLifecyclePage } from "@/features/dashboard";
 import { ChecksPage, CheckDetailPage } from "@/features/checks";
 import { DonorsPage, DonorDetailPage } from "@/features/donors";
 import { PatientsPage, PatientDetailPage } from "@/features/patients";
@@ -28,6 +28,7 @@ export function AppRoutes() {
         <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="dashboard" element={<DashboardPage />} />
         <Route path="checks" element={<ChecksPage />} />
+        <Route path="checks-lifecycle" element={<ChecksLifecyclePage />} />
         <Route path="checks/:id" element={<CheckDetailPage />} />
         <Route path="donors" element={<DonorsPage />} />
         <Route path="donors/:id" element={<DonorDetailPage />} />

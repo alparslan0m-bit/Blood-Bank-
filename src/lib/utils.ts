@@ -29,12 +29,25 @@ export const CHECK_STATUSES: Record<string, { label: string; color: string }> =
       label: "Blood Recorded",
       color: "bg-teal-soft text-teal-deep",
     },
-    distributed: {
-      label: "Distributed",
-      color: "bg-amber-soft text-amber-deep",
+    patient_served: {
+      label: "Patient Served",
+      color: "bg-violet-soft text-violet",
     },
-    completed: { label: "Completed", color: "bg-canvas-soft-2 text-ink" },
   };
+
+export function formatTimeInStage(updatedAt: string): string {
+  const hours = (Date.now() - new Date(updatedAt).getTime()) / 3_600_000;
+  if (hours < 1) return `${Math.max(1, Math.round(hours * 60))}m`;
+  if (hours < 24) return `${Math.round(hours)}h`;
+  return `${Math.round(hours / 24)}d`;
+}
+
+export function getTimeInStageColor(updatedAt: string): string {
+  const hours = (Date.now() - new Date(updatedAt).getTime()) / 3_600_000;
+  if (hours < 4) return "text-success";
+  if (hours < 24) return "text-warning-deep";
+  return "text-error-deep";
+}
 
 export function getStatusConfig(status: string) {
   return (

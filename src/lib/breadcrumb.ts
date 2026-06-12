@@ -1,6 +1,7 @@
 export const ROUTE_SEGMENT_LABELS: Record<string, string> = {
   dashboard: "Dashboard",
   checks: "Checks",
+  "checks-lifecycle": "Lifecycle",
   donors: "Donors",
   patients: "Patients",
   users: "Users",

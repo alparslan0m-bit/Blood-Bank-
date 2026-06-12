@@ -11,7 +11,8 @@ export async function fetchChecks() {
       patients(full_name, national_id, phone, department, file_number, address, social_notes, medical_notes),
       blood_types(code, label, is_rare),
       created_by_user:users!donation_checks_created_by_fkey(full_name, username),
-      distributor:users!donation_checks_distributor_id_fkey(full_name, username)
+      distributor:users!donation_checks_distributor_id_fkey(full_name, username),
+      patient_server:users!donation_checks_patient_served_by_fkey(full_name, username)
     `,
     )
     .order("created_at", { ascending: false });
@@ -31,7 +32,8 @@ export async function fetchCheck(id: string) {
       blood_types(code, label, is_rare),
       created_by_user:users!donation_checks_created_by_fkey(full_name, username),
       distributor:users!donation_checks_distributor_id_fkey(full_name, username),
-      blood_recorder:users!donation_checks_blood_recorded_by_fkey(full_name, username)
+      blood_recorder:users!donation_checks_blood_recorded_by_fkey(full_name, username),
+      patient_server:users!donation_checks_patient_served_by_fkey(full_name, username)
     `,
     )
     .eq("id", id)

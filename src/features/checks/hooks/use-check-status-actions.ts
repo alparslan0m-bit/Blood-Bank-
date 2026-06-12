@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/features/auth/auth-provider";
-import { updateCheck } from "@/features/checks/api/checks-api";
+import { createCheckEvent } from "@/features/checks/api/check-events-api";
 
 export function useCheckStatusActions(checkId: string) {
   const queryClient = useQueryClient();
@@ -9,20 +9,43 @@ export function useCheckStatusActions(checkId: string) {
   const [actionLoading, setActionLoading] = useState(false);
   const [selectedBloodType, setSelectedBloodType] = useState("");
   const [selectedDistributor, setSelectedDistributor] = useState("");
+  const [servePatientNotes, setServePatientNotes] = useState("");
 
-  const updateStatusMutation = useMutation({
-    mutationFn: (payload: Record<string, unknown>) =>
-      updateCheck(checkId, payload),
+  const eventMutation = useMutation({
+    mutationFn: (payload: {
+      eventType: string;
+      actorRole: string;
+      notes?: string;
+      metadata?: Record<string, unknown>;
+    }) =>
+      createCheckEvent(
+        checkId,
+        payload.eventType,
+        currentUser!.id,
+        payload.actorRole,
+        {
+          notes: payload.notes,
+          metadata: payload.metadata,
+          device_info: { platform: "web", source: "admin_dashboard" },
+        },
+      ),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["checks", checkId] });
+      queryClient.invalidateQueries({ queryKey: ["checks", checkId, "events"] });
       queryClient.invalidateQueries({ queryKey: ["checks"] });
     },
   });
 
-  const runAction = async (payload: Record<string, unknown>) => {
+  const runAction = async (payload: {
+    eventType: string;
+    actorRole: string;
+    notes?: string;
+    metadata?: Record<string, unknown>;
+  }) => {
+    if (!currentUser) return;
     setActionLoading(true);
     try {
-      await updateStatusMutation.mutateAsync(payload);
+      await eventMutation.mutateAsync(payload);
     } catch (e) {
       console.error(e);
     } finally {
@@ -33,29 +56,29 @@ export function useCheckStatusActions(checkId: string) {
   const handleTransfer = () => {
     if (!selectedDistributor) return;
     return runAction({
-      status: "transferred",
-      distributor_id: selectedDistributor,
-      transferred_to_distributor_at: new Date().toISOString(),
+      eventType: "transferred",
+      actorRole: "receiver",
+      metadata: { distributor_id: selectedDistributor },
     });
   };
 
   const handleRecordBlood = () => {
-    if (!selectedBloodType || !currentUser) return;
+    if (!selectedBloodType) return;
     return runAction({
-      status: "blood_recorded",
-      blood_type_id: parseInt(selectedBloodType),
-      blood_recorded_by: currentUser.id,
-      blood_recorded_at: new Date().toISOString(),
+      eventType: "blood_recorded",
+      actorRole: "lab",
+      metadata: { blood_type_id: parseInt(selectedBloodType, 10) },
     });
   };
 
-  const handleDistribute = () =>
-    runAction({
-      status: "distributed",
-      distributed_at: new Date().toISOString(),
+  const handleServePatient = () => {
+    if (!servePatientNotes.trim()) return;
+    return runAction({
+      eventType: "patient_served",
+      actorRole: "distributor",
+      notes: servePatientNotes.trim(),
     });
-
-  const handleComplete = () => runAction({ status: "completed" });
+  };
 
   return {
     actionLoading,
@@ -63,9 +86,10 @@ export function useCheckStatusActions(checkId: string) {
     setSelectedBloodType,
     selectedDistributor,
     setSelectedDistributor,
+    servePatientNotes,
+    setServePatientNotes,
     handleTransfer,
     handleRecordBlood,
-    handleDistribute,
-    handleComplete,
+    handleServePatient,
   };
 }

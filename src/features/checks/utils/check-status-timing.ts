@@ -9,10 +9,8 @@ export function getLastStatusChangeAt(check: CheckWithRelations): Date {
       return new Date(check.transferred_to_distributor_at ?? check.updated_at);
     case "blood_recorded":
       return new Date(check.blood_recorded_at ?? check.updated_at);
-    case "distributed":
-      return new Date(check.distributed_at ?? check.updated_at);
-    case "completed":
-      return new Date(check.updated_at);
+    case "patient_served":
+      return new Date(check.patient_served_at ?? check.updated_at);
     default:
       return new Date(check.updated_at);
   }

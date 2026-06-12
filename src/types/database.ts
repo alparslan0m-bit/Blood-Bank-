@@ -66,10 +66,16 @@ export interface CheckImage {
   uploaded_at: string;
 }
 
+export type CheckStatus =
+  | "created"
+  | "transferred"
+  | "blood_recorded"
+  | "patient_served";
+
 export interface DonationCheck {
   id: string;
   serial: string;
-  status: string;
+  status: CheckStatus | string;
   donor_id: string;
   patient_id: string | null;
   blood_type_id: number | null;
@@ -79,10 +85,26 @@ export interface DonationCheck {
   distributed_at: string | null;
   blood_recorded_by: string | null;
   blood_recorded_at: string | null;
+  patient_served_by: string | null;
+  patient_served_at: string | null;
+  patient_served_notes: string | null;
   metadata?: Record<string, unknown> | null;
   check_images: CheckImage[];
   created_at: string;
   updated_at: string;
+}
+
+export interface CheckEvent {
+  id: string;
+  check_id: string;
+  event_type: CheckStatus | string;
+  actor_id: string;
+  actor_role: string;
+  notes: string | null;
+  metadata: Record<string, unknown>;
+  device_info: Record<string, unknown> | null;
+  created_at: string;
+  actor?: Pick<User, "full_name" | "username"> | null;
 }
 
 export interface Activity {
@@ -109,6 +131,7 @@ export interface CheckWithRelations extends DonationCheck {
   created_by_user: User | null;
   distributor: User | null;
   blood_recorder: User | null;
+  patient_server: User | null;
 }
 
 export interface UserWithRoles extends User {

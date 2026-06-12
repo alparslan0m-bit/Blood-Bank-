@@ -10,6 +10,7 @@ import {
   ChevronLeft,
   Droplets,
   TrendingUp,
+  GitBranch,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,6 +22,7 @@ import {
 const navItems = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/checks", label: "Checks", icon: ClipboardCheck },
+  { to: "/checks-lifecycle", label: "Lifecycle", icon: GitBranch },
   { to: "/donors", label: "Donors", icon: Heart },
   { to: "/patients", label: "Patients", icon: UsersIcon },
   { to: "/users", label: "Users", icon: UserCog },

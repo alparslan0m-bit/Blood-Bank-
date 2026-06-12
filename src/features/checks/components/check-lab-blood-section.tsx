@@ -94,11 +94,11 @@ export function CheckLabBloodSection({ check }: CheckLabBloodSectionProps) {
           </div>
           <div className="space-y-xs">
             <span className="text-[10px] font-mono text-mute uppercase">
-              Distribution Date
+              Patient Served
             </span>
             <p className="text-body-sm font-medium text-ink">
-              {check.distributed_at
-                ? formatDateTime(check.distributed_at)
+              {check.patient_served_at
+                ? formatDateTime(check.patient_served_at)
                 : "—"}
             </p>
           </div>

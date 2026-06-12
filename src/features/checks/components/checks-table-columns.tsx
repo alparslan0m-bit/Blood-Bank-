@@ -2,7 +2,11 @@ import { BloodTypeBadge } from "@/components/blood-type-badge";
 import { StatusBadge } from "@/components/status-badge";
 import type { Column } from "@/components/data-table";
 import type { CheckWithRelations } from "@/types/database";
-import { formatDate } from "@/lib/utils";
+import {
+  formatDate,
+  formatTimeInStage,
+  getTimeInStageColor,
+} from "@/lib/utils";
 
 export function getChecksTableColumns(): Column<CheckWithRelations>[] {
   return [
@@ -59,6 +63,21 @@ export function getChecksTableColumns(): Column<CheckWithRelations>[] {
       header: "Status",
       sortable: true,
       render: (row) => <StatusBadge status={row.status} />,
+    },
+    {
+      key: "time_in_stage",
+      header: "Time in Stage",
+      sortable: true,
+      render: (row) =>
+        row.status !== "patient_served" ? (
+          <span
+            className={`font-mono text-caption font-medium ${getTimeInStageColor(row.updated_at)}`}
+          >
+            {formatTimeInStage(row.updated_at)}
+          </span>
+        ) : (
+          <span className="text-mute">—</span>
+        ),
     },
     {
       key: "created_at",

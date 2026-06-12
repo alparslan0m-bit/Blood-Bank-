@@ -16,7 +16,9 @@ import { PageHeader } from "@/components/page-header";
 import { ListViewToggle } from "@/components/list-view-toggle";
 import { Button } from "@/components/ui/button";
 import { FilterBar, FilterSelect } from "@/components/data-display";
-import { CHECK_STATUSES } from "@/constants/check-statuses";
+import { ACTIVE_CHECK_STATUSES } from "@/constants/check-statuses";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 export function ChecksPage() {
   const navigate = useNavigate();
@@ -37,6 +39,8 @@ export function ChecksPage() {
     setStatusFilter,
     bloodFilter,
     setBloodFilter,
+    bottleneckOnly,
+    setBottleneckOnly,
     donorIdFilter,
     filteredChecks,
     hasLocalFilters,
@@ -114,11 +118,30 @@ export function ChecksPage() {
           value={statusFilter}
           onValueChange={setStatusFilter}
           placeholder="All Statuses"
-          options={CHECK_STATUSES.map((s) => ({
-            value: s.value,
-            label: s.label,
-          }))}
+          options={[
+            { value: "all", label: "All Statuses" },
+            ...ACTIVE_CHECK_STATUSES.map((s) => ({
+              value: s.value,
+              label: s.label,
+            })),
+            { value: "patient_served", label: "Patient Served" },
+          ]}
         />
+        <div className="flex items-center gap-xs self-end pb-1">
+          <Checkbox
+            id="bottleneck-filter"
+            checked={bottleneckOnly}
+            onCheckedChange={(checked) =>
+              setBottleneckOnly(checked === true)
+            }
+          />
+          <Label
+            htmlFor="bottleneck-filter"
+            className="text-body-sm text-body cursor-pointer"
+          >
+            Bottleneck stages only
+          </Label>
+        </div>
         <FilterSelect
           label="Filter Blood Group"
           value={bloodFilter}

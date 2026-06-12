@@ -107,3 +107,59 @@ export async function fetchDepartmentDistribution() {
   }
   return Object.entries(counts).map(([name, value]) => ({ name, value }));
 }
+
+export async function fetchPendingTransfer() {
+  const { count } = await supabase
+    .from("pending_transfer")
+    .select("*", { count: "exact", head: true });
+  return count ?? 0;
+}
+
+export async function fetchPendingPatientService() {
+  const { count } = await supabase
+    .from("pending_patient_service")
+    .select("*", { count: "exact", head: true });
+  return count ?? 0;
+}
+
+export async function fetchStaleChecks() {
+  const { data, count } = await supabase
+    .from("stale_checks")
+    .select("id, serial, created_by_name, hours_stale", { count: "exact" })
+    .limit(5);
+  return { count: count ?? 0, items: data ?? [] };
+}
+
+export async function fetchLifecycleCounts() {
+  const { data } = await supabase.from("donation_checks").select("status");
+
+  if (!data) return [];
+
+  const counts: Record<string, number> = {};
+  for (const row of data) {
+    counts[row.status] = (counts[row.status] ?? 0) + 1;
+  }
+
+  const order = [
+    "created",
+    "transferred",
+    "blood_recorded",
+    "patient_served",
+  ];
+
+  return order.map((status) => ({
+    status,
+    count: counts[status] ?? 0,
+  }));
+}
+
+export async function fetchServedToday() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const { count } = await supabase
+    .from("donation_checks")
+    .select("*", { count: "exact", head: true })
+    .eq("status", "patient_served")
+    .gte("patient_served_at", today.toISOString());
+  return count ?? 0;
+}
