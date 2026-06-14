@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { matchesDateRange, matchesSearch } from "@/utils/filter-utils";
 
 type DistributorPerformanceRecord = {

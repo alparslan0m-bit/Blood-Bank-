@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { BloodTypeBadge } from "@/components/blood-type-badge";
 import type { Column } from "@/components/data-table";
 import { formatDate } from "@/lib/utils";

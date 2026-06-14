@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { Badge } from "@/components/ui/badge";
 import { KanbanBoard, buildKanbanColumns } from "@/components/kanban-board";
 import { KanbanCard } from "@/components/kanban-card";
 import { formatRelative } from "@/lib/utils";
