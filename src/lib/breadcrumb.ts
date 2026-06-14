@@ -48,6 +48,7 @@ function formatSegment(segment: string): string {
 }
 
 export function canNavigateBack(): boolean {
-  const idx = (window.history.state as { idx?: number } | null)?.idx;
+  const state = window.history.state as { idx?: number } | null;
+  const idx = state?.idx;
   return typeof idx === "number" && idx > 0;
 }
