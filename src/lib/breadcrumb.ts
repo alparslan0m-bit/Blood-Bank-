@@ -29,9 +29,12 @@ export function buildBreadcrumbSegments(
   let path = "";
 
   for (let i = 0; i < parts.length - 1; i++) {
-    path += `/${parts[i]}`;
+    const segment = parts[i];
+    if (!segment) continue;
+
+    path += `/${segment}`;
     segments.push({
-      label: ROUTE_SEGMENT_LABELS[parts[i]] ?? formatSegment(parts[i]),
+      label: ROUTE_SEGMENT_LABELS[segment] ?? formatSegment(segment),
       to: path,
     });
   }
